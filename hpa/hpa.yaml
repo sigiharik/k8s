@@ -35,8 +35,8 @@ spec:
             memory: "128Mi"   # Request 128Mi of memory
             cpu: "100m"       # Request 100m CPU (0.1 CPU)
           limits:
-            memory: "512Mi"   # Limit memory usage to 512Mi
-            cpu: "500m"       # Limit CPU usage to 500m (0.5 CPU)
+            memory: "256Mi"   # Limit memory usage to 512Mi
+            cpu: "200m"       # Limit CPU usage to 500m (0.5 CPU)
 ---
 apiVersion: v1
 kind: Service
@@ -63,7 +63,7 @@ spec:
     kind: Deployment
     name: nginx-deployment  # The name of the nginx deployment
   minReplicas: 1            # The minimum number of Pods
-  maxReplicas: 10            # The maximum number of Pods
+  maxReplicas: 5            # The maximum number of Pods
   metrics:
   - type: Resource
     resource:
@@ -80,4 +80,4 @@ spec:
             app: my-app  # Replace with your app's label for custom metrics
       target:
         type: Value
-        value: "2000"  # Scale when total HTTP requests exceed 2000
+        value: "1000"  # Scale when total HTTP requests exceed 2000
