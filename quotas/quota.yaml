@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: quota
+  name: quota
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: quota1
+  namespace: quota
+spec:
+  hard:
+    requests.cpu: "1"                # Total CPU request limit (2 CPUs)
+    requests.memory: "1Gi"            # Total memory request limit (2Gi)
+    limits.cpu: "2"                   # Total CPU limit (4 CPUs)
+    limits.memory: "2Gi"              # Total memory limit (4Gi)
+    pods: "5"                         # Limit the number of pods to 3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod1
+  namespace: quota
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      requests:
+        cpu: "0.5"        # Request 1 CPU
+        memory: "500Mi"    # Request 1Gi memory
+      limits:
+        cpu: "1"         # Limit 2 CPUs
+        memory: "1Gi"    # Limit 2Gi memory
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod2
+  namespace: quota
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      requests:
+        cpu: "0.5"        # Request 1 CPU
+        memory: "500Mi"    # Request 1Gi memory
+      limits:
+        cpu: "1"         # Limit 2 CPUs
+        memory: "1Gi"    # Limit 2Gi memory
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod3
+  namespace: quota
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      requests:
+        cpu: "0.5"        # Request 1 CPU
+        memory: "500Mi"    # Request 1Gi memory
+      limits:
+        cpu: "1"         # Limit 2 CPUs
+        memory: "1Gi"    # Limit 2Gi memory
+---
