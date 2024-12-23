@@ -71,13 +71,13 @@ spec:
       target:
         type: Utilization
         averageUtilization: 50  # Scale when CPU usage exceeds 80%
-    - type: External
-      external:
-        metric:
-          name: http_requests_total
-          selector:
-            matchLabels:
-              app: my-app  # Replace with your app's label for custom metrics
-        target:
-          type: Value
-          value: "2000"  # Scale when total HTTP requests exceed 2000
+  - type: External
+    external:
+      metric:
+        name: http_requests_total
+        selector:
+          matchLabels:
+            app: my-app  # Replace with your app's label for custom metrics
+      target:
+        type: Value
+        value: "2000"  # Scale when total HTTP requests exceed 2000
