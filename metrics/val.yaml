@@ -1,22 +1,18 @@
 # First snippet: Configure Prometheus and Grafana services with NodePort
-
-prometheus:
-  server:
-    service:
-      type: NodePort   # Expose Prometheus service using NodePort
-      port: 80         # Internal port for Prometheus
-      nodePort: 30300   # External NodePort for Prometheus access
-
 grafana:
   service:
     type: NodePort   # Expose Grafana service using NodePort
     port: 80         # Internal port for Grafana
     nodePort: 30400   # External NodePort for Grafana access
 
-
 # Second snippet: Configure the Prometheus Adapter to expose custom metrics
 
 prometheus:
+  service:
+    type: NodePort   # Expose Prometheus service using NodePort
+    port: 80         # Internal port for Prometheus
+    nodePort: 30300   # External NodePort for Prometheus access
+    targetPort: 9090
   prometheusSpec:
     externalLabels:
       prometheus: k8s
