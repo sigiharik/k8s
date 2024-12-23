@@ -48,10 +48,10 @@ spec:
         env:
           - name: NGINX_STATUS_URL
             value: "http://localhost/nginx_status"
-    volumes:
-      - name: nginx-config
-        configMap:
-          name: nginx-config
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: nginx-config
 ---
 apiVersion: v1
 kind: Service
