@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: quota
+  name: hpa
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: hpa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest  # Using the official Nginx image
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "128Mi"   # Request 128Mi of memory
+            cpu: "100m"       # Request 100m CPU (0.1 CPU)
+          limits:
+            memory: "256Mi"   # Limit memory usage to 512Mi
+            cpu: "200m"       # Limit CPU usage to 500m (0.5 CPU)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: hpa
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer  # You can also use NodePort or ClusterIP depending on your setup
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-hpa
+  namespace: hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-deployment  # The name of the nginx deployment
+  minReplicas: 1            # The minimum number of Pods
+  maxReplicas: 5            # The maximum number of Pods
+  metrics:
+  - type: External
+    external:
+      metric:
+        name: http_requests_total
+        selector:
+          matchLabels:
+            app: nginx  # Replace with your app's label for custom metrics
+      target:
+        type: Value
+        value: "1000"  # Scale when total HTTP requests exceed 2000

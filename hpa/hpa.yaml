@@ -77,7 +77,7 @@ spec:
         name: http_requests_total
         selector:
           matchLabels:
-            app: my-app  # Replace with your app's label for custom metrics
+            app: nginx  # Replace with your app's label for custom metrics
       target:
         type: Value
         value: "1000"  # Scale when total HTTP requests exceed 2000
