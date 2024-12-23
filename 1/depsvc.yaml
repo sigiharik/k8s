@@ -17,10 +17,25 @@ spec:
       labels:
         app: nginx
     spec:
+      initContainers:
+        - name: init-chown
+          image: busybox
+          command:
+            - "sh"
+            - "-c"
+            - |
+              adduser -D -u 101 nginx && \
+              chown -R nginx:nginx /var/log/nginx
+          volumeMounts:
+            - name: log-volume
+              mountPath: /var/log/nginx
       containers:
       - image: nginx
         name: nginx
         resources: {}
+        volumeMounts:
+        - mountPath: /var/log/nginx
+          name: log-volume
       - name: fluentd
         image: fluentd
         volumeMounts:
