@@ -10,9 +10,8 @@ grafana:
 prometheus:
   service:
     type: NodePort   # Expose Prometheus service using NodePort
-    port: 80         # Internal port for Prometheus
+    port: 9090         # Internal port for Prometheus
     nodePort: 30300   # External NodePort for Prometheus access
-    targetPort: 9090
   prometheusSpec:
     externalLabels:
       prometheus: k8s
