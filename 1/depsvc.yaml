@@ -21,6 +21,14 @@ spec:
       - image: nginx
         name: nginx
         resources: {}
+      - name: fluentd
+        image: fluentd
+        volumeMounts:
+        - mountPath: /var/log/nginx
+          name: log-volume
+      volumes:
+      - name: log-volume
+        emptyDir: {}
 status: {}
 ---
 apiVersion: v1
