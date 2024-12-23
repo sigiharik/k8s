@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
-    kubernetes.io/metadata.name: quota
-  name: hpa
+    kubernetes.io/metadata.name: hpap
+  name: hpap
 spec:
   finalizers:
   - kubernetes
@@ -14,7 +14,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
-  namespace: hpa
+  namespace: hpap
 spec:
   replicas: 1
   selector:
@@ -37,12 +37,27 @@ spec:
           limits:
             memory: "256Mi"   # Limit memory usage to 512Mi
             cpu: "200m"       # Limit CPU usage to 500m (0.5 CPU)
+        volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+      - name: nginx-prometheus-exporter
+        image: nginx/nginx-prometheus-exporter:latest
+        ports:
+          - containerPort: 9113
+        env:
+          - name: NGINX_STATUS_URL
+            value: "http://localhost/nginx_status"
+    volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: nginx-service
-  namespace: hpa
+  namespace: hpap
 spec:
   selector:
     app: nginx
@@ -50,13 +65,17 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+      name: http
+    - name: nginx-exporter
+      port: 9113
+      targetPort: 9113
   type: LoadBalancer  # You can also use NodePort or ClusterIP depending on your setup
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: nginx-hpa
-  namespace: hpa
+  namespace: hpap
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
-    kubernetes.io/metadata.name: quota
+    kubernetes.io/metadata.name: hpa
   name: hpa
 spec:
   finalizers:

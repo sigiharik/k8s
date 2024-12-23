@@ -16,7 +16,17 @@ prometheus:
   prometheusSpec:
     externalLabels:
       prometheus: k8s
-
+    additionalScrapeConfigs:
+      - job_name: 'nginx'
+        static_configs:
+          - targets: ['nginx-service:9113']  # Scraping the Nginx Prometheus exporter metrics
+        metrics_path: '/metrics'           # Path to scrape
+        scheme: 'http'
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            target_label: app
+          - source_labels: [__meta_kubernetes_pod_name]
+            target_label: pod
 metrics:
   - name: http_requests_total
     selector:
