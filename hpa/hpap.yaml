@@ -53,6 +53,10 @@ data:
                 allow 127.0.0.1;
                 deny all;
             }
+            location / {
+               root /usr/share/nginx/html;
+               index index.html index.htm;
+            }
         }
     }
 ---
