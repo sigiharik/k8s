@@ -79,4 +79,5 @@ spec:
       metric:
         name: nginx_vts_server_requests_per_second
       target:
+        type: AverageValue
         averageValue: 350m
