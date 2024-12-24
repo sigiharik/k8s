@@ -1,5 +1,5 @@
 prometheus:
-  url: "http://kube-prometheus-stack-prometheus.prom.svc.local"
+  url: "http://kube-prometheus-stack-prometheus.prom.svc"
   prometheusSpec:
     externalLabels:
       prometheus: "k8s"
