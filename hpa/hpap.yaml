@@ -44,7 +44,7 @@ data:
         types_hash_max_size 2048;
 
         server {
-            listen 80;
+            listen 8080;
             server_name localhost;
 
             location /stub_status {
@@ -79,7 +79,7 @@ spec:
       - name: nginx
         image: nginx:latest  # Using the official Nginx image
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         resources:
           requests:
             memory: "128Mi"   # Request 128Mi of memory
@@ -116,9 +116,11 @@ spec:
       port: 80
       targetPort: 80
       name: http
+      nodePort: 31001
     - name: nginx-exporter
       port: 9113
       targetPort: 9113
+      nodePort: 31002
   type: LoadBalancer  # You can also use NodePort or ClusterIP depending on your setup
 ---
 apiVersion: autoscaling/v2
