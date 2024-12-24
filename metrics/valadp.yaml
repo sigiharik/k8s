@@ -1,0 +1,9 @@
+rules:
+  # Add custom rules for your custom metrics
+  - seriesQuery: 'nginx_http_requests_total'
+    seriesFilters: []
+    resources: {}
+    name:
+      matches: "nginx_http_requests_total"
+      as: "nginx_http_requests_total"
+    metricsQuery: 'nginx_http_requests_total'

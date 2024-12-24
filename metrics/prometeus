@@ -1,4 +1,7 @@
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
-helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f $u/metrics/val.yaml --namespace prom --create-namespace
+helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f $u/metrics/val.yaml -n prom --create-namespace
+helm install prometheus-adapter prometheus-community/prometheus-adapter -f $u/metrics/valadp.yaml -n prom --set prometheus.enabled=false
+
+
 or helm pull(to download helm repo files to local machine)
