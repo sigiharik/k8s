@@ -1,6 +1,9 @@
 https://www.metricfire.com/blog/ha-kubernetes-monitoring-using-prometheus-and-thanos/
 https://medium.com/@MetricFire/prometheus-metrics-based-autoscaling-in-kubernetes-129deb8e7fa6
 
+export VERIFY_CHECKSUM=false
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f $u/metrics/val.yaml -n monitoring --create-namespace
