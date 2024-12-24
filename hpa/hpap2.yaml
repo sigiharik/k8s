@@ -10,6 +10,9 @@ metadata:
   name: nginx-deployment
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-server
   template:
     metadata:
       annotations:
