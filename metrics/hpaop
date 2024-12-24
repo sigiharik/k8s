@@ -1,0 +1,33 @@
+https://www.metricfire.com/blog/ha-kubernetes-monitoring-using-prometheus-and-thanos/
+https://medium.com/@MetricFire/prometheus-metrics-based-autoscaling-in-kubernetes-129deb8e7fa6
+
+git clone https://github.com/prometheus-operator/kube-prometheus.git 
+cd kube-prometheus
+git checkout release-0.9
+
+go install -a github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
+go install github.com/google/go-jsonnet/cmd/jsonnet@latest
+go install github.com/brancz/gojsontoyaml@latest
+
+vi example.jsonnet
+Uncomment the (import 'kube-prometheus/addons/custom-metrics.libsonnet') + line from the example.jsonnet file:
+
+Add the following rule to the ./jsonnet/kube-prometheus/addons/custom-metrics.libsonnet file in the rules+ section:
+      {
+        seriesQuery: "nginx_https_requests_total",
+        resources: {
+          overrides: {
+            namespace: { resource: 'namespace' },
+            pod: { resource: 'pod' },
+          },
+        },
+        name: { "matches": "^(.*)_total", "as": "nginx_https_requests_total" },
+        metricsQuery: "(sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>))",
+      },
+	  
+jb update
+
+./build.sh example.jsonnet
+
+kubectl apply --server-side -f manifests/setup
+kubectl apply -f manifests/
