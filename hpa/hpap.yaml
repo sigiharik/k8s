@@ -139,7 +139,7 @@ spec:
   - type: External
     external:
       metric:
-        name: http_requests_total
+        name: nginx_http_requests_total
         selector:
           matchLabels:
             app: nginx  # Replace with your app's label for custom metrics

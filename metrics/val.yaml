@@ -27,7 +27,7 @@ prometheus:
           - source_labels: [__meta_kubernetes_pod_name]
             target_label: pod
 metrics:
-  - name: http_requests_total
+  - name: nginx_http_requests_total
     selector:
       matchLabels:
         app: nginx
