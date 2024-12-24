@@ -1,6 +1,3 @@
-prometheusAdapter:
-  enabled: true
-  
 # First snippet: Configure Prometheus and Grafana services with NodePort
 grafana:
   service:
