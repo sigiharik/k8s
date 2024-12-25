@@ -22,7 +22,10 @@ rules:
 - apiGroups: [""]
   resources:
   - configmaps
-  verbs: ["get"]
+  verbs: ["get", "list"]
+- apiGroups: ["authorization.k8s.io"]
+  resources: ["subjectaccessreviews"]
+  verbs: ["create"]
 - nonResourceURLs: ["/metrics"]
   verbs: ["get"]
 ---
