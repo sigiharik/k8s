@@ -80,10 +80,10 @@ spec:
       serviceAccountName: monitoring
       containers:
       - name: custom-metrics-apiserver
-        image: quay.io/coreos/k8s-prometheus-adapter-amd64:v0.4.1
+        image: quay.io/coreos/k8s-prometheus-adapter-amd64:v0.8.4
         args:
         - /adapter
-        - --secure-port=6443
+        - --secure-port=443
         - --tls-cert-file=/var/run/serving-cert/serving.crt
         - --tls-private-key-file=/var/run/serving-cert/serving.key
         - --logtostderr=true
@@ -92,7 +92,7 @@ spec:
         - --v=10
         - --config=/etc/adapter/config.yaml
         ports:
-        - containerPort: 6443
+        - containerPort: 443
         volumeMounts:
         - mountPath: /var/run/serving-cert
           name: volume-serving-cert
@@ -116,11 +116,11 @@ metadata:
 spec:
   ports:
   - port: 443
-    targetPort: 6443
+    targetPort: 443
   selector:
     app: custom-metrics-apiserver
 ---
-apiVersion: apiregistration.k8s.io/v1
+apiVersion: admissionregistration.k8s.io/v1
 kind: APIService
 metadata:
   name: v1.custom.metrics.k8s.io
@@ -128,6 +128,7 @@ spec:
   service:
     name: custom-metrics-apiserver
     namespace: monitoring
+    port: 443
   group: custom.metrics.k8s.io
   version: v1
   insecureSkipTLSVerify: true
