@@ -1,9 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  labels:
-    kubernetes.io/metadata.name: hpap
-  name: hpap
+  name: nginx
 spec:
   finalizers:
   - kubernetes
@@ -14,7 +12,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-config
-  namespace: hpap
+  namespace: nginx
 data:
   nginx.conf: |
     user nginx;
@@ -64,7 +62,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
-  namespace: hpap
+  namespace: nginx
 spec:
   replicas: 1
   selector:
@@ -107,7 +105,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx-service
-  namespace: hpap
+  namespace: nginx
 spec:
   selector:
     app: nginx
@@ -127,7 +125,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: nginx-hpa
-  namespace: hpap
+  namespace: nginx
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

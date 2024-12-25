@@ -18,7 +18,7 @@ prometheus:
     additionalScrapeConfigs:
       - job_name: 'nginx'
         static_configs:
-          - targets: ['nginx-service.hpap.svc.cluster.local:9113']  # Scraping the Nginx Prometheus exporter metrics
+          - targets: ['nginx-service.nginx.svc.cluster.local:9113']  # Scraping the Nginx Prometheus exporter metrics
         metrics_path: '/metrics'           # Path to scrape
         scheme: 'http'
         relabel_configs:

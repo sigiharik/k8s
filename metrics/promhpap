@@ -1,8 +1,8 @@
 it didn't turnedout well, stuck at adopter, its not getting the metrics for hpa
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
-helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f $u/metrics/val.yaml -n prom --create-namespace
-helm install prometheus-adapter prometheus-community/prometheus-adapter -f $u/metrics/valadp.yaml -n prom --set prometheus.enabled=false
+helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f $u/metrics/val.yaml -n monitoring --create-namespace
+helm install prometheus-adapter prometheus-community/prometheus-adapter -f $u/metrics/valadp.yaml -n monitoring --set prometheus.enabled=false
 
 helm install prometheus-adapter prometheus-community/prometheus-adapter -f val.yaml -n prom --set prometheus.enabled=false
 

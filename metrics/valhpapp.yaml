@@ -37,7 +37,7 @@ prometheus:
             target_label: __param_port
             regex: "9113"
           - target_label: __address__
-            replacement: "$1:$2"  # Use the dynamic discovered pod IP and port
+            replacement: "$1:$2"
           - source_labels: [__param_path, __param_port]
             target_label: __metrics_path__
             replacement: "/$1"
