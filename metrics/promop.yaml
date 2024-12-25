@@ -121,7 +121,7 @@ spec:
   selector:
     app: custom-metrics-apiserver
 ---
-apiVersion: admissionregistration.k8s.io/v1
+apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
   name: v1.custom.metrics.k8s.io
