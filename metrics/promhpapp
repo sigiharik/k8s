@@ -1,4 +1,4 @@
-hpapp conf localhost, api port
+api port
 
 export VERIFY_CHECKSUM=false
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
