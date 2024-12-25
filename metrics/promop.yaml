@@ -83,7 +83,7 @@ spec:
         image: quay.io/coreos/k8s-prometheus-adapter-amd64:v0.8.4
         args:
         - /adapter
-        - --secure-port=443
+        - --secure-port=8443
         - --tls-cert-file=/var/run/serving-cert/serving.crt
         - --tls-private-key-file=/var/run/serving-cert/serving.key
         - --logtostderr=true
@@ -92,7 +92,7 @@ spec:
         - --v=10
         - --config=/etc/adapter/config.yaml
         ports:
-        - containerPort: 443
+        - containerPort: 8443
         volumeMounts:
         - mountPath: /var/run/serving-cert
           name: volume-serving-cert
@@ -115,8 +115,8 @@ metadata:
   namespace: monitoring
 spec:
   ports:
-  - port: 443
-    targetPort: 443
+  - port: 8443
+    targetPort: 8443
   selector:
     app: custom-metrics-apiserver
 ---
@@ -128,7 +128,7 @@ spec:
   service:
     name: custom-metrics-apiserver
     namespace: monitoring
-    port: 443
+    port: 8443
   group: custom.metrics.k8s.io
   version: v1
   caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMrekNDQWVPZ0F3SUJBZ0lVWEVxZWFHWTYzZG1OUG5wcTNtM29Ra0lqb1Uwd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0RURUxNQWtHQTFVRUF3d0NZMkV3SGhjTk1qUXhNakkxTWpJd01ETTRXaGNOTWpVeE1qSTFNakl3TURNNApXakFOTVFzd0NRWURWUVFEREFKallUQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ0VCCkFNY1hySzlhcDNPRklRN0ZNNnNpZHBLUTVMNnQ2RC82U3JQcHZWbzJPWCtuL1ZLajZjTWp1UGltM0UvRDdmWUsKckM5OXREdkVtdDF3eXdRMUQ3ZDNZRjlSMDJiVzZQYWh2ZXZUUENXUnI2VXY0MFhqMnVrNEZtYmlQeFRLMk9MQgpLNVdRbExTWW5leVlWT1RtR010bFNweGFSSXRBK0FJL3FmL1UzWjZDaFNwTkEybHZYSmNIallaeXBuT2ZkYUxJClBOZjRxcVducDZQZkJGbWg0MVBweWF0VTY2bGJRM0N6Ylk4TlJvbWE0OXpUUDhwQXkrc0kyUGlWZVB6akxtMHcKaFVhcjJMWHZWV290aldIUm5CUCtqR2RhQys5eWdNVitKVXN6RmU1SldwUk54dC9hVktMeTB2dW0rbnpyNFJWawozQytkYkZKcmNQMXB5UU92MVlJbFp2a0NBd0VBQWFOVE1GRXdIUVlEVlIwT0JCWUVGQmxlNGE5cFFOd1pDM0pKCnVwZFp4RjRmbzVjS01COEdBMVVkSXdRWU1CYUFGQmxlNGE5cFFOd1pDM0pKdXBkWnhGNGZvNWNLTUE4R0ExVWQKRXdFQi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFKemhZNU9WZy9KVzNXMlJ3RVVlWTAwdwpHR1pCVGozM3BGeFNQclowOEovYUo2dE5rc1lPNEpCYjZ5N1U4eG1oZms2OHREVXFQZmlPUDZiSUR6TUtud1p4Cm5OdEN0QldnZ1hZRUFyWkNsWjR5UVJhRFpQSnd2ZXl6NkRYRUd6L0ZWdmhDV1J2SjhNS0VwWm9lZ1I1UzlJRXEKVVd2VG13Tno0bDkrNDNHSHA0NlVBdXhMbm9USmpTMUJGZVdZZk5TVUx1M0IvV05UTFVoRUFLOXlERlA2bERHUgpGLzArQUR0ZTdkZWZ2RXZkbWhmbEVJbFdIMEVNc1lYR0JsL01JRFd4YkhHYzF4eEhveVk3NnJTazVvSGNGakRnCkNQVVNiZmthY0NEeFdBUmtEcmZycFhIb3U4dGFVQlJhQmhkaXQ0bUwyUlc2U1JpU0J0Y3VZdkRTVTEyQXBQcz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
