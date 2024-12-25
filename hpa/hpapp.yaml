@@ -129,4 +129,4 @@ spec:
         name: nginx_http_requests_total
       target:
         type: Value
-        Value: "1000"
+        value: "1000"
