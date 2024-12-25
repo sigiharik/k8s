@@ -1,0 +1,45 @@
+# First snippet: Configure Prometheus and Grafana services with NodePort
+grafana:
+  service:
+    type: NodePort   # Expose Grafana service using NodePort
+    port: 80         # Internal port for Grafana
+    nodePort: 30400   # External NodePort for Grafana access
+
+# Second snippet: Configure the Prometheus Adapter to expose custom metrics
+
+prometheus:
+  service:
+    type: NodePort   # Expose Prometheus service using NodePort
+    port: 9090         # Internal port for Prometheus
+    nodePort: 30300   # External NodePort for Prometheus access
+  prometheusSpec:
+    externalLabels:
+      prometheus: k8s
+    additionalScrapeConfigs:
+      - job_name: 'nginx'
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            action: keep
+            regex: nginx-server
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+            action: keep
+            regex: "true"
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+            action: replace
+            target_label: __param_path
+            regex: /stub_status
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_port]
+            action: replace
+            target_label: __param_port
+            regex: "8080"
+          - target_label: __address__
+            replacement: "$1:$2"  # Use the dynamic discovered pod IP and port
+          - source_labels: [__param_path, __param_port]
+            target_label: __metrics_path__
+            replacement: "/$1"
+          - target_label: __param_port
+            replacement: "8080"
+        metrics_path: /stub_status
+        scheme: http

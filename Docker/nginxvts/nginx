@@ -1,0 +1,47 @@
+FROM nginx:latest
+
+# Install necessary packages for building NGINX with VTS
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpcre3 \
+    libpcre3-dev \
+    libssl-dev \
+    zlib1g-dev \
+    wget \
+    unzip
+
+# Download and extract NGINX source
+RUN wget http://nginx.org/download/nginx-1.23.1.tar.gz && \
+    tar -zxvf nginx-1.23.1.tar.gz && \
+    ls -l nginx-1.23.1  # Verify the contents of the extracted NGINX source
+
+# Download and unzip VTS module
+RUN wget https://github.com/vozlt/nginx-module-vts/archive/refs/heads/master.zip && \
+    unzip master.zip && \
+    ls -l nginx-module-vts-master  # Verify the contents of the unzipped VTS module
+
+# Move VTS module to the NGINX source directory
+RUN mv nginx-module-vts-master ./nginx-1.23.1/nginx-module-vts
+
+# Debug: List contents of nginx-1.23.1 to check if configure script is present
+RUN ls -l /nginx-1.23.1/
+
+# Build and install NGINX with VTS
+WORKDIR /nginx-1.23.1  
+# Set the working directory to the NGINX source folder
+
+# Debug: Verify that the configure script exists
+RUN ls -l  # Check if ./configure exists in the current directory
+
+RUN ./configure --add-module=./nginx-module-vts && \
+    make && \
+    make install
+
+# Copy custom nginx.conf into the image
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Clean up
+RUN rm -rf /nginx-1.23.1*
+
+# Expose default HTTP port
+EXPOSE 80

@@ -1,0 +1,22 @@
+hpapp conf localhost, api port
+
+export VERIFY_CHECKSUM=false
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f $u/metrics/valhpapp.yaml -n monitoring --create-namespace
+
+ka $u/hpa/hpapp.yaml
+
+curl ip:port/stub_status to access the app and check logs
+
+wget https://raw.githubusercontent.com/sigiharik/k8s/refs/heads/main/metricks/Makefile && make -f Makefile certs
+
+ka $u/metrics/promop.yaml
+
+check logs for adopter container
+
+kubectl get --raw "/apis/custom.metrics.k8s.io/v1"
+
+Its all ready to accept traffic and scale based on traffic.

@@ -1,0 +1,8 @@
+failing that nginx-module-vts is not adding to config
+docker build --no-cache -t my-nginx-vts .
+docker build -t nginx-vts .
+docker run -it -p 80:80 my-nginx-vts /bin/bash
+curl http://127.0.0.1:80/
+curl http://127.0.0.1:80/status
+docker stop -f conid
+docker exec -it conid /bin/bash
