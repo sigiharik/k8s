@@ -9,9 +9,11 @@ helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f
 
 ka $u/hpa/hpapp.yaml
 
-curl ip:port/stub_status to access the app and check logs
+curl ip:9113/metrics to access the app and check logs
 
-wget https://raw.githubusercontent.com/sigiharik/k8s/refs/heads/main/metricks/Makefile && make -f Makefile certs
+wget https://raw.githubusercontent.com/sigiharik/k8s/refs/heads/main/metrics/Makefile && make -f Makefile certs
+
+ka custom-metrics-api/cm-adapter-serving-certs.yaml
 
 ka $u/metrics/promop.yaml
 

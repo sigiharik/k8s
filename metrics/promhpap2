@@ -12,7 +12,7 @@ ka $u/hpa/hpap2.yaml
 
 curl ip:port/status/format/prometheus to access the app and check logs
 
-wget https://raw.githubusercontent.com/sigiharik/k8s/refs/heads/main/metricks/Makefile && make -f Makefile certs
+wget https://raw.githubusercontent.com/sigiharik/k8s/refs/heads/main/metrics/Makefile && make -f Makefile certs
 
 ka $u/metrics/promop.yaml
 
