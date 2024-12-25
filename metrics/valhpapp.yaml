@@ -29,17 +29,17 @@ prometheus:
           - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
             action: replace
             target_label: __param_path
-            regex: /stub_status
+            regex: /metrics
           - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_port]
             action: replace
             target_label: __param_port
-            regex: "8080"
+            regex: "9113"
           - target_label: __address__
             replacement: "$1:$2"  # Use the dynamic discovered pod IP and port
           - source_labels: [__param_path, __param_port]
             target_label: __metrics_path__
             replacement: "/$1"
           - target_label: __param_port
-            replacement: "8080"
-        metrics_path: /stub_status
+            replacement: "9113"
+        metrics_path: /metrics
         scheme: http

@@ -43,8 +43,8 @@ data:
             location /stub_status {
                 stub_status on;
                 access_log off;
-                allow all;
-                deny none;
+                allow 127.0.0.1;
+                deny all;
             }
             location / {
                root /usr/share/nginx/html;
@@ -66,9 +66,9 @@ spec:
   template:
     metadata:
       annotations:
-        prometheus.io/path: "/stub_status"
+        prometheus.io/path: "/metrics"
         prometheus.io/scrape: "true"
-        prometheus.io/port: "8080"
+        prometheus.io/port: "9113"
       labels:
         app: nginx-server
     spec:
@@ -90,6 +90,13 @@ spec:
             - name: nginx-config
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
+      - name: nginx-prometheus-exporter
+        image: nginx/nginx-prometheus-exporter:latest
+        ports:
+          - containerPort: 9113
+        env:
+          - name: NGINX_STATUS_URL
+            value: "http://localhost/nginx_status"
       volumes:
         - name: nginx-config
           configMap:
@@ -106,6 +113,10 @@ spec:
     targetPort: 8080
     nodePort: 31001
     name: http
+  - name: nginx-exporter
+    port: 9113
+    targetPort: 9113
+    nodePort: 31002
   selector:
     app: nginx-server
   type: LoadBalancer
@@ -128,5 +139,5 @@ spec:
       metric:
         name: nginx_http_requests_total
       target:
-        type: Value
-        value: 1000
+        type: AverageValue
+        averageValue: 1000
