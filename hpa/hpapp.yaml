@@ -96,7 +96,7 @@ spec:
           - containerPort: 9113
         env:
           - name: NGINX_STATUS_URL
-            value: "http://localhost/nginx_status"
+            value: "http://localhost/stub_status"
       volumes:
         - name: nginx-config
           configMap:
