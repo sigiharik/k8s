@@ -42,4 +42,4 @@ endif
 rmcerts:
 	@echo removing files
 	@rm -f $(OUTPUT_DIR)/apiserver-key.pem $(OUTPUT_DIR)/apiserver.csr $(OUTPUT_DIR)/apiserver.pem
-	@rm -f $(OUTPUT_DIR)/$(PURPOSE)-ca.crt $(OUTPUT_DIR)/$(PURPOSE)-ca.key
+	@rm -f $(OUTPUT_DIR)/$(PURPOSE)-ca.key
