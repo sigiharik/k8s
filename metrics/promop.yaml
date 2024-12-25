@@ -91,6 +91,7 @@ spec:
         - --metrics-relist-interval=30s
         - --v=10
         - --config=/etc/adapter/config.yaml
+        - --insecure-skip-tls-verify=true
         ports:
         - containerPort: 443
         volumeMounts:
