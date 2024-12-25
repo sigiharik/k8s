@@ -57,7 +57,7 @@ data:
       name:
         matches: "^(.*)_total"
         as: "nginx_http_requests_total"
-      metricsQuery: (sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>))‍
+      metricsQuery: (sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>))
 ---
 apiVersion: apps/v1
 kind: Deployment
