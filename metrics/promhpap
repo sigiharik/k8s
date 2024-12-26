@@ -32,5 +32,7 @@ data:
         as: "nginx_http_requests_total"
       metricsQuery: (sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>))
 
-k rollout restart deploy/prometheus-adapter
-kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1"
+
+k edit cm prometheus-adapter;k rollout restart deploy/prometheus-adapter;kgp -w;kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1"|grep nginx
+
+will checking for apiservices, crds, cabundle for apiservice, logs of adapter, metrics on 9090/metrics

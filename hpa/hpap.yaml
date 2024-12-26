@@ -56,8 +56,8 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
   namespace: nginx
+  name: nginx-deployment
 spec:
   replicas: 1
   selector:
@@ -65,21 +65,26 @@ spec:
       app: nginx
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "9113"
       labels:
         app: nginx
     spec:
       containers:
       - name: nginx
-        image: nginx:latest  # Using the official Nginx image
+        image: nginx:latest
         ports:
         - containerPort: 8080
         resources:
-          requests:
-            memory: "128Mi"   # Request 128Mi of memory
-            cpu: "100m"       # Request 100m CPU (0.1 CPU)
           limits:
-            memory: "256Mi"   # Limit memory usage to 512Mi
-            cpu: "200m"       # Limit CPU usage to 500m (0.5 CPU)
+            memory: "128Mi"
+            cpu: "500m"
+          requests:
+            memory: "128Mi"
+            cpu: "200m"
+          name: http
         volumeMounts:
             - name: nginx-config
               mountPath: /etc/nginx/nginx.conf
@@ -99,21 +104,21 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service
   namespace: nginx
+  name: nginx-service
 spec:
   selector:
     app: nginx
   ports:
-    - port: 8080
-      targetPort: 8080
-      name: http
-      nodePort: 31001
-    - name: nginx-exporter
-      port: 9113
-      targetPort: 9113
-      nodePort: 31002
-  type: LoadBalancer  # You can also use NodePort or ClusterIP depending on your setup
+  - port: 8080
+    targetPort: 8080
+    nodePort: 31001
+    name: http
+  - name: nginx-exporter
+    port: 9113
+    targetPort: 9113
+    nodePort: 31002
+  type: LoadBalancer
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -124,9 +129,9 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: nginx-deployment  # The name of the nginx deployment
-  minReplicas: 1            # The minimum number of Pods
-  maxReplicas: 5            # The maximum number of Pods
+    name: nginx-deployment
+  minReplicas: 1
+  maxReplicas: 5
   metrics:
   - type: External
     external:

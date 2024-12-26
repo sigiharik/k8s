@@ -62,7 +62,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx-server
+      app: nginx
   template:
     metadata:
       annotations:
@@ -70,12 +70,13 @@ spec:
         prometheus.io/path: "/metrics"
         prometheus.io/port: "9113"
       labels:
-        app: nginx-server
+        app: nginx
     spec:
       containers:
-      - name: nginx-demo
+      - name: nginx
         image: nginx:latest
-        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
         resources:
           limits:
             memory: "128Mi"
@@ -83,8 +84,6 @@ spec:
           requests:
             memory: "128Mi"
             cpu: "200m"
-        ports:
-        - containerPort: 8080
           name: http
         volumeMounts:
             - name: nginx-config
@@ -108,6 +107,8 @@ metadata:
   namespace: nginx
   name: nginx-service
 spec:
+  selector:
+    app: nginx
   ports:
   - port: 8080
     targetPort: 8080
@@ -117,8 +118,6 @@ spec:
     port: 9113
     targetPort: 9113
     nodePort: 31002
-  selector:
-    app: nginx-server
   type: LoadBalancer
 ---
 apiVersion: autoscaling/v2
@@ -132,7 +131,7 @@ spec:
     kind: Deployment
     name: nginx-deployment
   minReplicas: 1
-  maxReplicas: 6
+  maxReplicas: 5
   metrics:
   - type: Pods
     pods:

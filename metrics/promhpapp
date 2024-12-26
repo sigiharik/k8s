@@ -7,7 +7,6 @@ DO ALIAS FIRST
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f $u/metrics/val.yaml -n monitoring --create-namespace
-helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f $u/metrics/valhpapp.yaml -n monitoring --create-namespace
 
 wget https://raw.githubusercontent.com/sigiharik/k8s/refs/heads/main/metrics/Makefile && make -f Makefile certs
 ka custom-metrics-api/cm-adapter-serving-certs.yaml
