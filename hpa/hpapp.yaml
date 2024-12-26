@@ -138,5 +138,5 @@ spec:
       metric:
         name: nginx_http_requests_total
       target:
-        type: AverageValue
-        averageValue: 1000
+        type: Value
+        averageValue: 500m
