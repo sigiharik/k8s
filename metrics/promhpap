@@ -17,20 +17,18 @@ kubectl get --raw "/apis/custom.metrics.k8s.io/v1"
 
 Its all ready to accept traffic and scale based on traffic.
 
-data:
-  config.yaml: |
-    rules:
-    - seriesQuery: 'nginx_http_requests_total'
-      resources:
-        overrides:
-          kubernetes_namespace:
-            resource: namespace
-          kubernetes_pod_name:
-            resource: pod
-      name:
-        matches: "^(.*)_total"
-        as: "nginx_http_requests_total"
-      metricsQuery: (sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>))
+rules:
+- seriesQuery: 'nginx_http_requests_total'
+  resources:
+    overrides:
+      kubernetes_namespace:
+        resource: namespace
+      kubernetes_pod_name:
+        resource: pod
+  name:
+    matches: "^(.*)_total"
+    as: "nginx_http_requests_total"
+  metricsQuery: (sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>))
 
 
 k edit cm prometheus-adapter;k rollout restart deploy/prometheus-adapter;kgp -w;kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1"|grep nginx

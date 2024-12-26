@@ -1,5 +1,20 @@
+logLevel: 10
+
 prometheus:
-  url: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local"
+  url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local
   prometheusSpec:
     externalLabels:
       prometheus: "k8s"
+
+rules:
+- seriesQuery: 'nginx_http_requests_total'
+  resources:
+    overrides:
+      kubernetes_namespace:
+        resource: namespace
+      kubernetes_pod_name:
+        resource: pod
+  name:
+    matches: "^(.*)_total"
+    as: "nginx_http_requests_total"
+  metricsQuery: (sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>))
