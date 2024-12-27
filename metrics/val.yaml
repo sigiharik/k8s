@@ -22,6 +22,12 @@ prometheus:
         relabel_configs:
         - source_labels: [__meta_kubernetes_pod_label_app]
           target_label: app
+        - source_labels: [__meta_kubernetes_pod_name]
+          target_label: pod
+        - source_labels: [__meta_kubernetes_pod_container_port]
+          target_label: __param_port
+        - target_label: __address__
+          replacement: '${1}:${2}'
       - job_name: 'nginx2'
         static_configs:
           - targets: ['nginx-service.nginx.svc.cluster.local:9113']
