@@ -17,9 +17,15 @@ prometheus:
       prometheus: k8s
     additionalScrapeConfigs:
       - job_name: 'nginx'
+        kubernetes_sd_configs:
+        - role: pod
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_label_app]
+          target_label: app
+      - job_name: 'nginx2'
         static_configs:
-          - targets: ['nginx-service.nginx.svc.cluster.local:9113']  # Scraping the Nginx Prometheus exporter metrics
-        metrics_path: '/metrics'           # Path to scrape
+          - targets: ['nginx-service.nginx.svc.cluster.local:9113']
+        metrics_path: '/metrics'
         scheme: 'http'
         relabel_configs:
           - source_labels: [__meta_kubernetes_pod_label_app]

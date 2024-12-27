@@ -9,15 +9,10 @@ prometheus:
 rules:
   default: false
   custom:
-    - seriesQuery: 'nginx_http_requests_total'
-      resources:
-        overrides:
-          namespace:
-            resource: namespace
-          pod:
-            resource: pod
+    - metricsQuery: sum(rate(nginx_http_requests_total{job="nginx"}[1m])) by (pod)
       name:
-        matches: "^(.*)_total"
         as: "nginx_http_requests_total"
-      metricsQuery: |
-        sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>)
+        matches: "nginx_http_requests_total"
+      resources:
+        template: <<.Resource>>
+      seriesQuery: 'nginx_http_requests_total{job="nginx"}'
