@@ -16,3 +16,10 @@ rules:
       resources:
         template: <<.Resource>>
       seriesQuery: 'nginx_http_requests_total{job="nginx"}'
+    - metricsQuery: sum(rate(nginx_http_requests_total{job="nginx2"}[1m])) by (pod)
+      name:
+        as: "nginx_http_requests_total2"
+        matches: "nginx_http_requests_total"
+      resources:
+        template: <<.Resource>>
+      seriesQuery: 'nginx_http_requests_total{job="nginx2"}'
