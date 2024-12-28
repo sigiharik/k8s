@@ -1,0 +1,24 @@
+This was not going well, so did resource limits/request to 100 to force it
+apt-get update
+sudo apt-get install openjdk-8-jdk
+sudo apt install maven -y
+
+mvn archetype:generate -DgroupId=com.example -DartifactId=memory-leak-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+Replace pom.xml 
+mkdir -p memory-leak-app/src/main/java/com/example;Create the MemoryLeakApplication.java file inside this directory
+mvn clean package
+
+remove memory-leak-app/src/test/java/com/example/AppTest.java
+
+mvn install; from memory-leak-app
+
+docker login
+vi Dockerfile
+
+docker build -t memory-leak-app .
+docker tag memory-leak-app sigiharik/memory-leak-app:latest
+docker push sigiharik/memory-leak-app:latest
+
+kr test --image=sigiharik/memory-leak-app
+ka $u/OOM/oom.yaml

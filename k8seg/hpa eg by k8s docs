@@ -1,0 +1,8 @@
+This worked until the Resource only for Object/Pods metrics it needs to setup with custom metrics api again
+https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
+
+ka $u/metrics/metrics.yaml
+ka $u/k8seg/php-apache.yaml
+kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=5
+kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+kubectl get hpa php-apache -w

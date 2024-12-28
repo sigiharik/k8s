@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-leak-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memory-leak-app
+  template:
+    metadata:
+      labels:
+        app: memory-leak-app
+    spec:
+      containers:
+        - name: memory-leak-container
+          image: sigiharik/memory-leak-app:latest
+          resources:
+            requests:
+              memory: "128Mi"   # Request 128Mi of memory
+            limits:
+              memory: "256Mi"   # Set a limit of 256Mi of memory
+          ports:
+            - containerPort: 8080

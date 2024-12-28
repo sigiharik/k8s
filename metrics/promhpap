@@ -32,5 +32,8 @@ rules:
 
 
 k edit cm prometheus-adapter;k rollout restart deploy/prometheus-adapter;kgp -w;kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1"|grep nginx
+OR
+helm upgrade --install prometheus-adapter prometheus-community/prometheus-adapter -f $u/metrics/valadp.yaml -n monitoring --set prometheus.enabled=false --config $u/hpa/adaptercm.yaml
+
 
 will checking for apiservices, crds, cabundle for apiservice, logs of adapter, metrics on 9090/metrics

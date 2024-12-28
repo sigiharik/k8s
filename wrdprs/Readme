@@ -1,0 +1,31 @@
+
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+helm install wordpress bitnami/wordpress --namespace wordpress --create-namespace --set persistence.enabled=true --set persistence.size=500Mi --set mariadb.persistence.enabled=true --set mariadb.persistence.size=500Mi
+ksc wordpress
+kubectl get pvc
+kubectl get pv
+kubectl get svc
+export SERVICE_IP=$(kubectl get svc --namespace wordpress wordpress --template "{{ range (index .status.loadBalancer.ingress 0) }}{{ . }}{{ end }}")
+   echo "WordPress URL: http://$SERVICE_IP/"
+   echo "WordPress Admin URL: http://$SERVICE_IP/admin"
+
+echo Username: user
+echo Password: $(kubectl get secret --namespace wordpress wordpress -o jsonpath="{.data.wordpress-password}" | base64 -d)
+
+mysql
+mysql -u root -p password
+CREATE DATABASE wordpress;
+show database
+
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+kubectl apply -f $u/wrdprs/ing.yaml
+Access by domain or ip
+
+kubectl scale deployment wordpress --replicas=3 -n wordpress
+
+
+helm install wordpress bitnami/wordpress --namespace wordpress --set mariadb.enabled=false --set externalDatabase.host=<mysql-host> --set externalDatabase.user=<mysql-user> --set externalDatabase.password=<mysql-password> --set externalDatabase.database=<database-name>
+helm install redis bitnami/redis --namespace wordpress
+helm install wordpress bitnami/wordpress --namespace wordpress --set redis.enabled=true --set redis.usePassword=false

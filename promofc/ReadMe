@@ -1,0 +1,10 @@
+Will start over
+https://github.com/prometheus-operator/prometheus-operator?tab=readme-ov-file#quickstart
+https://github.com/kubernetes-sigs/prometheus-adapter/blob/master/docs/walkthrough.md
+https://github.com/kubernetes-sigs/prometheus-adapter?tab=readme-ov-file
+https://github.com/prometheus-operator/kube-prometheus
+
+check & set --authentication-token-webhook=true
+vi /etc/default/kubelet
+sudo systemctl daemon-reload && sudo systemctl restart kubelet
+
