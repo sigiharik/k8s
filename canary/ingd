@@ -4,6 +4,8 @@ metadata:
   name: wordpress-ingress
   namespace: wordpress
   annotations:
+    nginx.ingress.kubernetes.io/canary: "true"  # Mark the canary
+    nginx.ingress.kubernetes.io/canary-weight: "20"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
@@ -15,6 +17,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: wordpress
+            name: e
             port:
               number: 80

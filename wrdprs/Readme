@@ -20,11 +20,17 @@ show database
 
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
-kubectl apply -f $u/wrdprs/ing.yaml
+ make sure ingressClassName: nginx
+kubectl apply -f $u/wrdprs/ing.yaml;
+
+add an entry in /etc/hosts; 10.104.33.89 word.com
+
 Access by domain or ip
+echo "Hello 1" > index.html
+k cp dep-5765b5777f-d8rjz:/usr/share/nginx/html/index.html /
+k cp /index.html dep-5765b5777f-fck44:/usr/share/nginx/html/index.html
 
 kubectl scale deployment wordpress --replicas=3 -n wordpress
-
 
 helm install wordpress bitnami/wordpress --namespace wordpress --set mariadb.enabled=false --set externalDatabase.host=<mysql-host> --set externalDatabase.user=<mysql-user> --set externalDatabase.password=<mysql-password> --set externalDatabase.database=<database-name>
 helm install redis bitnami/redis --namespace wordpress

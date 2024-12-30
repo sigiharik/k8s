@@ -1,0 +1,21 @@
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+kc deploy d --image=nginx --replicas=2;k expose deploy/d --port=80 --target-port=80;
+kc deploy e --image=nginx --replicas=2;k expose deploy/e --port=80 --target-port=80;
+
+echo "Hello 1" > index.html
+k cp /index.html dep-5765b5777f-fck44:/usr/share/nginx/html/index.html
+
+make sure ingressClassName: nginx
+kubectl apply -f $u/canary/ingd.yaml;
+kubectl apply -f $u/canary/ingd.yaml; with annotations for e svc
+
+add an entry in /etc/hosts; ingCntIP word.com
+
+curl word.com
+
+kubectl patch ingress i2 -p '{"metadata": {"annotations": {"nginx.ingress.kubernetes.io/canary-weight": "50"}}}'
+================================================================================================================
+BLUEGREEN DEPLOYMENT
+kubectl patch service d -p '{"spec": {"selector": {"app": "e"}}}'
+kubectl patch service d -p '{"spec": {"selector": {"app": "my-app", "version": "green"}}}'
